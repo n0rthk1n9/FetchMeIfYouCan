@@ -15,7 +15,7 @@ struct ContentView: View {
                     .font(.title)
                     .multilineTextAlignment(.center)
                 NavigationLink("Stage 1: Get All Characters", destination: Stage1View())
-                NavigationLink("Stage 2: Search Characters by House", destination: EmptyView())
+                NavigationLink("Stage 2: Search Characters by House", destination: Stage2View())
                 NavigationLink("Stage 3: Clean Architecture", destination: EmptyView())
                 Spacer()
             }
