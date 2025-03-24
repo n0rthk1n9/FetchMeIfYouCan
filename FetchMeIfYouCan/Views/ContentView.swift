@@ -14,7 +14,7 @@ struct ContentView: View {
                 Text("Because who needs a pilot’s license when you have URLSession")
                     .font(.title)
                     .multilineTextAlignment(.center)
-                NavigationLink("Stage 1: Get All Characters", destination: EmptyView())
+                NavigationLink("Stage 1: Get All Characters", destination: Stage1View())
                 NavigationLink("Stage 2: Search Characters by House", destination: EmptyView())
                 NavigationLink("Stage 3: Clean Architecture", destination: EmptyView())
                 Spacer()
