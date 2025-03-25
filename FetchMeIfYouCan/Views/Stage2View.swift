@@ -32,8 +32,9 @@ struct Stage2View: View {
                         }
                         Spacer()
                         if let characterImageURLString = character.image,
-                           let url = URL(string: characterImageURLString),
-                           !characterImageURLString.isEmpty {
+                            let url = URL(string: characterImageURLString),
+                            !characterImageURLString.isEmpty
+                        {
                             AsyncImage(
                                 url: url,
                                 content: { image in
@@ -61,7 +62,14 @@ struct Stage2View: View {
     func fetchCharacters() async {
         isLoading = true
         defer { isLoading = false }
-        guard let url = URL(string: "https://hp-api.onrender.com/api/characters/house/\(house.lowercased())") else { return }
+        let trimmedHouse = house.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedHouse.isEmpty else {
+            characters = []
+            return
+        }
+        guard let url = URL(string: "https://hp-api.onrender.com/api/characters/house/\(house.lowercased())") else {
+            return
+        }
 
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
