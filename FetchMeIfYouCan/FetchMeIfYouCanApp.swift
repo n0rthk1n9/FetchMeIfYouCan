@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct FetchMeIfYouCanApp: App {
+    @State private var viewModel = CharacterViewModel()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(viewModel)
         }
     }
 }
