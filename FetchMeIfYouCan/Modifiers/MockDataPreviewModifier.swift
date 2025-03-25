@@ -10,7 +10,7 @@ import SwiftUI
 struct MoickDataPreviewModifier: PreviewModifier {
     static func makeSharedContext() async throws -> CharacterViewModel {
         let mockViewModel = CharacterViewModel(service: MockCharacterService())
-        await mockViewModel.loadCharacters(for: "Slytherin")
+        try await mockViewModel.loadCharacters(for: "Slytherin")
         return mockViewModel
     }
     

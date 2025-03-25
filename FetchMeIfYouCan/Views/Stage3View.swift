@@ -11,6 +11,7 @@ struct Stage3View: View {
     @Environment(CharacterViewModel.self) private var viewModel
 
     @State private var house = ""
+    @State private var errorMessage: String?
 
     var body: some View {
         VStack {
@@ -45,7 +46,7 @@ struct Stage3View: View {
                                     EmptyView()
                                 }
                             )
-                        } else if let image = character.image {
+                        } else if let image = character.image, !image.isEmpty {
                             Image(image)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
@@ -57,8 +58,30 @@ struct Stage3View: View {
         }
         .searchable(text: $house)
         .task(id: house) {
+            let trimmedHouse = house.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedHouse.isEmpty else {
+                viewModel.characters = []
+                return
+            }
             try? await Task.sleep(nanoseconds: 500_000_000)
-            await viewModel.loadCharacters(for: house)
+            do {
+                try await viewModel.loadCharacters(for: house)
+            } catch {
+                if !error.localizedDescription.contains("cancelled") {
+                    errorMessage = error.localizedDescription
+                }
+            }
+        }
+        .alert(
+            "Error",
+            isPresented: Binding<Bool>(
+                get: { errorMessage != nil },
+                set: { if !$0 { errorMessage = nil } }
+            )
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(errorMessage ?? "Something went wrong")
         }
         .navigationTitle("Architecture Time")
     }

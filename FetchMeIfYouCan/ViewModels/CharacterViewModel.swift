@@ -18,13 +18,14 @@ final class CharacterViewModel {
     }
 
     @MainActor
-    func loadCharacters(for house: String) async {
+    func loadCharacters(for house: String) async throws {
         isLoading = true
+        defer { isLoading = false }
         do {
             let result = try await service.fetchCharacters(byHouse: house)
             characters = result
         } catch {
-            print("Error loading characters: \(error)")
+            throw error
         }
         isLoading = false
     }
